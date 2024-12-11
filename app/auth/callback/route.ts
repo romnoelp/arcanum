@@ -12,7 +12,7 @@ export async function GET(request: Request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
-      const redirectBase = "https://arcanum-two.vercel.app"; // Always redirect to production URL
+      const redirectBase = "https://arcanum-two.vercel.app/admin"; // Always redirect to production URL
 
       return NextResponse.redirect(`${redirectBase}${next}`);
     }
