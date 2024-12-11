@@ -17,7 +17,7 @@ const Logout = () => {
       setTimeout(() => router.push("/"), 2000);
     };
     logoutUser();
-  }, []);
+  });
 
   return <div>You have logged out... redirecting in a sec.</div>;
 };

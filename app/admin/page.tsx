@@ -188,7 +188,7 @@ const Admin = () => {
     },
   ];
 
-  const [students, setStudents] = useState<
+  const [, setStudents] = useState<
     {
       id: string;
       name: string;
@@ -197,7 +197,7 @@ const Admin = () => {
       role: string;
     }[]
   >([]);
-  const [librarians, setLibrarians] = useState<
+  const [, setLibrarians] = useState<
     {
       id: string;
       name: string;
