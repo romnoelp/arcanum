@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "../../../../utils/supabase/server";
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url);
+  const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
   const next = searchParams.get("next") ?? "/redirect"; // Redirect after successful login
 
@@ -12,17 +12,13 @@ export async function GET(request: Request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
-      const forwardedHost = request.headers.get("x-forwarded-host");
-      const isLocalEnv = process.env.NODE_ENV === "development";
-      const redirectBase = isLocalEnv
-        ? origin
-        : forwardedHost
-        ? `https://${forwardedHost}`
-        : origin;
+      // Hardcode production domain for consistent redirects
+      const redirectBase = "https://arcanum-two.vercel.app";
 
       return NextResponse.redirect(`${redirectBase}${next}`);
     }
   }
 
-  return NextResponse.redirect(`${origin}/error`);
+  // Redirect to the error page on failure
+  return NextResponse.redirect("https://arcanum-two.vercel.app/error");
 }
