@@ -1,6 +1,6 @@
 "use server";
 import { NextResponse } from "next/server";
-import { createClient } from "../../../../utils/supabase/server";
+import { createClient } from "../../../utils/supabase/server";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -12,13 +12,11 @@ export async function GET(request: Request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
-      // Hardcode production domain for consistent redirects
-      const redirectBase = "https://arcanum-two.vercel.app";
+      const redirectBase = "https://arcanum-two.vercel.app"; // Always redirect to production URL
 
       return NextResponse.redirect(`${redirectBase}${next}`);
     }
   }
 
-  // Redirect to the error page on failure
-  return NextResponse.redirect("https://arcanum-two.vercel.app/error");
+  return NextResponse.redirect(`${origin}/error`);
 }

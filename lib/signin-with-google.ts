@@ -3,7 +3,7 @@ import { createClient } from "../utils/supabase/client";
 
 export const signInWithGoogle = async () => {
   const supabase = createClient();
-  const redirectTo = "https://arcanum-two.vercel.app/auth/callback"; // Updated production URL
+  const redirectTo = "https://arcanum-two.vercel.app/auth/callback"; 
 
   const { error: authError } = await supabase.auth.signInWithOAuth({
     provider: "google",
