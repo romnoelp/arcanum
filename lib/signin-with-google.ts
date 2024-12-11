@@ -1,23 +1,17 @@
 import { redirect } from "next/navigation";
 import { createClient } from "../utils/supabase/client";
 
-function getBaseURL() {
-  // if (typeof window !== "undefined") return "";
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-
-  if (process.env.RENDER_INTERNAL_HOSTNAME)
-    return `http://${process.env.RENDER_INTERNAL_HOSTNAME}:${process.env.PORT}`;
-
-  return `http://localhost:${process.env.PORT ?? 3000}`;
-}
-
 export const signInWithGoogle = async () => {
-  console.log("getbaseurl", getBaseURL());
   const supabase = createClient();
+  const redirectTo =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:3000/auth/callback"
+      : "https://arcanum-3795.vercel.app/auth/callback";
+
   const { error: authError } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${getBaseURL()}/auth/callback`,
+      redirectTo,
       queryParams: {
         access_type: "offline",
         prompt: "consent",

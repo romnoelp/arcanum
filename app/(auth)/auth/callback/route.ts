@@ -1,14 +1,7 @@
-"use server";
-import { NextResponse } from "next/server";
-import { createClient } from "../../../../utils/supabase/server";
-
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? "/redirect";
-
-  console.log("origin", origin);
-  console.log("code", code);
+  const next = searchParams.get("next") ?? "/redirect"; // Redirect after successful login
 
   if (code) {
     const supabase = createClient();
@@ -16,18 +9,15 @@ export async function GET(request: Request) {
 
     if (!error) {
       const forwardedHost = request.headers.get("x-forwarded-host");
-      console.log("forwarded host", forwardedHost);
       const isLocalEnv = process.env.NODE_ENV === "development";
-      if (isLocalEnv) {
-        return NextResponse.redirect(`${origin}${next}`);
-      } else if (forwardedHost) {
-        return;
-      } else {
-        return NextResponse.redirect(`${origin}${next}`);
-      }
+      const redirectBase = isLocalEnv
+        ? origin
+        : forwardedHost
+        ? `https://${forwardedHost}`
+        : origin;
+
+      return NextResponse.redirect(`${redirectBase}${next}`);
     }
-  } else {
-    return NextResponse.redirect(`${origin}/`);
   }
 
   return NextResponse.redirect(`${origin}/error`);
