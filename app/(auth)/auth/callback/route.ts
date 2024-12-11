@@ -5,7 +5,10 @@ import { createClient } from "../../../../utils/supabase/server";
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? "/redirect"; 
+  const next = searchParams.get("next") ?? "/redirect";
+
+  console.log("origin", origin);
+  console.log("code", code);
 
   if (code) {
     const supabase = createClient();
@@ -13,11 +16,12 @@ export async function GET(request: Request) {
 
     if (!error) {
       const forwardedHost = request.headers.get("x-forwarded-host");
+      console.log("forwarded host", forwardedHost);
       const isLocalEnv = process.env.NODE_ENV === "development";
       if (isLocalEnv) {
         return NextResponse.redirect(`${origin}${next}`);
       } else if (forwardedHost) {
-        return NextResponse.redirect(`https://${forwardedHost}${next}`);
+        return;
       } else {
         return NextResponse.redirect(`${origin}${next}`);
       }

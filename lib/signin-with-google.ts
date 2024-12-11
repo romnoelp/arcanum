@@ -2,8 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "../utils/supabase/client";
 
 function getBaseURL() {
-  if (typeof window !== "undefined") return "";
-
+  // if (typeof window !== "undefined") return "";
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
 
   if (process.env.RENDER_INTERNAL_HOSTNAME)
@@ -13,6 +12,7 @@ function getBaseURL() {
 }
 
 export const signInWithGoogle = async () => {
+  console.log("getbaseurl", getBaseURL());
   const supabase = createClient();
   const { error: authError } = await supabase.auth.signInWithOAuth({
     provider: "google",
