@@ -44,7 +44,7 @@ export async function updateSession(request: NextRequest) {
   ) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
-    url.pathname = "/admin";
+    url.pathname = "https://arcanum-two.vercel.app/admin";
     return NextResponse.redirect(url);
   }
 
