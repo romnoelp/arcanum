@@ -18,5 +18,5 @@ export async function GET(request: Request) {
     }
   }
 
-  return NextResponse.redirect(`${origin}/error`);
+  return NextResponse.redirect("https://arcanum-two.vercel.app");
 }
